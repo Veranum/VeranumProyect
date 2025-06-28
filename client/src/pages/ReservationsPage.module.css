@@ -1,0 +1,96 @@
+/* client/src/pages/ReservationsPage.module.css */
+.reservationWrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 992px) {
+    .reservationWrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+}
+
+.roomSummary img {
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.roomSummary h2 {
+    color: var(--veranum-blue);
+    margin-bottom: 1rem;
+}
+
+.roomSummary p {
+    line-height: 1.7;
+    color: var(--color-text-body);
+}
+
+.bookingForm {
+    background-color: var(--color-surface);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.bookingForm h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.formSubtitle {
+    text-align: center;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+}
+
+.errorMessage {
+  background-color: #fbe9e7;
+  color: var(--error-red);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--error-red);
+}
+
+.summary {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.summaryLine, .summaryLine_total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.summaryLine_total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-header);
+    margin-top: 1rem;
+}
+
+.buttonContainer {
+    margin-top: 2rem;
+}
+
+.buttonContainer button {
+    width: 100%;
+    background-color: var(--color-button-secondary-bg);
+    color: var(--color-button-secondary-text);
+    padding: 15px;
+    font-size: 1.2rem;
+}
+
+.buttonContainer button:hover {
+    background-color: var(--color-button-secondary-hover-bg);
+}

@@ -1,0 +1,49 @@
+/* client/src/components/reservations/DateRangePicker.module.css */
+.dateRangeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--color-primary-light);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--veranum-blue);
+}
+
+.dateInputGroup {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dateInputGroup label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--veranum-blue);
+    margin-bottom: 0.5rem;
+}
+
+.dateInputGroup input[type="date"] {
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-family: inherit;
+    background-color: var(--color-surface);
+}
+
+.separator {
+    font-size: 2rem;
+    color: var(--veranum-blue);
+    padding-top: 1.5rem; /* Alinea con los inputs */
+}
+
+@media (max-width: 500px) {
+    .dateRangeContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .separator {
+        display: none;
+    }
+}

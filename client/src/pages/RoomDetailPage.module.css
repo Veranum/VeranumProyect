@@ -1,0 +1,90 @@
+/* client/src/pages/RoomDetailPage.module.css */
+.roomDetailCard {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden; /* Para que los bordes redondeados afecten a la imagen */
+  margin-top: 2rem;
+}
+
+.roomImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.roomInfo {
+  padding: 2.5rem;
+}
+
+.roomInfo h1 {
+  margin-top: 0;
+  font-size: 2.5rem;
+  color: var(--veranum-blue);
+}
+
+.roomPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--action-amber);
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+
+.roomDescription {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  color: var(--color-text-body);
+}
+
+.amenitiesList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.amenitiesList li {
+  background: var(--color-background);
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  position: relative;
+  padding-left: 30px;
+  border: 1px solid var(--color-border);
+}
+
+.amenitiesList li::before {
+  content: '✓';
+  color: var(--color-state-success);
+  font-weight: bold;
+  position: absolute;
+  left: 10px;
+}
+
+.reserveButton {
+  background-color: var(--color-button-secondary-bg);
+  color: var(--color-button-secondary-text);
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  font-size: 1.2rem;
+}
+
+.reserveButton:hover {
+    background-color: var(--color-button-secondary-hover-bg);
+}
+.reserveButton:disabled {
+  background-color: var(--color-button-disabled-bg);
+  color: var(--color-button-disabled-text);
+  cursor: not-allowed;
+}
+.reserveButton:disabled:hover {
+  background-color: var(--color-button-disabled-bg);
+}
+.reserveButton:disabled:active {
+  transform: none;
+}

@@ -1,0 +1,130 @@
+/* client/src/components/layout/Footer.module.css */
+.footer {
+  background-color: var(--neutral-900);
+  color: var(--neutral-300);
+  padding-top: 4rem;
+  font-size: 0.95rem;
+  font-family: var(--font-secondary);
+}
+
+.footerContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
+}
+
+.footerColumn h3 {
+  font-family: var(--font-primary);
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700;
+}
+
+.description {
+    line-height: 1.7;
+    color: var(--neutral-500);
+    margin-bottom: 1.5rem;
+}
+
+.contactInfo p {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--neutral-300);
+}
+
+.contactInfo svg {
+    flex-shrink: 0; /* Evita que los íconos se encojan */
+}
+
+.footerColumn ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerColumn li {
+    margin-bottom: 0.75rem;
+}
+
+.footerColumn a {
+  color: var(--neutral-300);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footerColumn a:hover {
+  color: var(--action-amber);
+}
+
+.newsletterForm {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.newsletterForm input {
+    flex-grow: 1;
+    border: 1px solid var(--neutral-700);
+    background-color: var(--neutral-800);
+    color: var(--white);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    padding: 0.75rem;
+}
+
+.newsletterForm button {
+    background-color: var(--action-amber);
+    color: var(--neutral-900);
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.socialIcons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.socialIcons a {
+    color: var(--neutral-500);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.socialIcons a:hover {
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.footerBottom {
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: 3rem;
+  border-top: 1px solid var(--neutral-700);
+  color: var(--neutral-500);
+}
+
+.legalLinks {
+    margin-top: 0.5rem;
+}
+
+.legalLinks a {
+    color: var(--neutral-500);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.legalLinks a:hover {
+    color: var(--white);
+}
+
+.legalLinks span {
+    margin: 0 0.5rem;
+}

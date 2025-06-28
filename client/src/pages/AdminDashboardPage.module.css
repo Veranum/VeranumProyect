@@ -1,0 +1,57 @@
+/* client/src/pages/AdminDashboardPage.module.css */
+.dashboardContainer h1 {
+  margin-bottom: 0.5rem;
+}
+
+.dashboardContainer > p { /* Selector para el párrafo de bienvenida */
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.dashboardCard {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border-left: 5px solid var(--veranum-blue);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboardCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 95, 115, 0.12);
+}
+
+.dashboardCard h3 {
+  margin-top: 0;
+  color: var(--veranum-blue);
+}
+
+.dashboardCard p {
+  flex-grow: 1;
+  font-size: 1rem;
+  color: var(--color-text-body);
+}
+
+.dashboardCard button {
+    background-color: var(--color-button-primary-bg);
+    color: var(--color-button-primary-text);
+}
+
+.dashboardCard button:hover {
+    background-color: var(--color-button-primary-hover-bg);
+}
+
+.dashboardCard.cardReservas { border-color: var(--veranum-blue); }
+.dashboardCard.cardHabitaciones { border-color: var(--success-green); }
+.dashboardCard.cardReportes { border-color: var(--error-red); }
+.dashboardCard.cardPromociones { border-color: var(--action-amber); }

@@ -1,0 +1,142 @@
+/* client/src/index.css */
+
+/* --- 1. IMPORTACIÓN DE LA NUEVA FUENTE: POPPINS --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+
+/* ---------------------------------- */
+/* --- 2. PALETA DE COLORES (RAÍZ) --- */
+/* ---------------------------------- */
+:root {
+  /* Paleta Principal */
+  --veranum-blue: #005f73;
+  --action-amber: #ee9b00;
+
+  /* Escala de Neutrales */
+  --neutral-100: #f8f9fa;
+  --neutral-200: #e9ecef;
+  --neutral-300: #dee2e6;
+  --neutral-500: #6c757d;
+  --neutral-700: #495057;
+  --neutral-900: #212529;
+  
+  /* Acentos de Estado */
+  --success-green: #2a9d8f;
+  --warning-yellow: #e9c46a;
+  --error-red: #e76f51;
+  --white: #ffffff;
+}
+
+/* ----------------------------- */
+/* --- 3. VARIABLES SEMÁNTICAS --- */
+/* ----------------------------- */
+:root {
+  /* --- CAMBIO DE FUENTES --- */
+  --font-main: 'Poppins', sans-serif; /* 'Poppins' para todo */
+
+  /* Fondos */
+  --color-background: var(--neutral-100);
+  --color-surface: var(--white);
+  --color-primary-light: #e0f7fa;
+  
+  /* Texto */
+  --color-text-header: var(--neutral-900);
+  --color-text-body: var(--neutral-700);
+  --color-text-muted: var(--neutral-500);
+  --color-text-inverted: var(--white);
+  --color-text-link: var(--veranum-blue);
+
+  /* Botones y Acciones */
+  --color-button-primary-bg: var(--veranum-blue);
+  --color-button-primary-text: var(--white);
+  --color-button-primary-hover-bg: #004d61;
+
+  --color-button-secondary-bg: var(--action-amber);
+  --color-button-secondary-text: var(--neutral-900);
+  --color-button-secondary-hover-bg: #ffb703;
+  
+  --color-button-danger-bg: var(--error-red);
+  --color-button-danger-text: var(--white);
+  --color-button-danger-hover-bg: #e55a35;
+
+  /* Bordes */
+  --color-border: var(--neutral-300);
+  --color-border-focus: var(--veranum-blue);
+
+  /* Utilidades */
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 95, 115, 0.1);
+}
+
+/* --------------------------------- */
+/* --- 4. APLICACIÓN DE LAS FUENTES --- */
+/* --------------------------------- */
+body {
+  margin: 0;
+  font-family: var(--font-main); /* 'Poppins' para todo el cuerpo por defecto */
+  background-color: var(--color-background);
+  color: var(--color-text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-main); /* 'Poppins' también para encabezados */
+    color: var(--color-text-header);
+    font-weight: 700; /* Hacemos los títulos más gruesos */
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+button {
+  font-family: var(--font-main);
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    background-color: var(--neutral-300);
+    color: var(--neutral-500);
+    cursor: not-allowed;
+    transform: none;
+}
+
+input, select, textarea {
+    font-family: var(--font-main);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    font-size: 1rem;
+    background-color: var(--white);
+    color: var(--color-text-body);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 95, 115, 0.2);
+}

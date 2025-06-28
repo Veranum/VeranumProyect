@@ -1,0 +1,67 @@
+/* ===== client/src/pages/LoginPage.module.css ===== */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 2rem;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 450px;
+  background: var(--color-surface);
+  padding: 3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+
+.loginCard h2 {
+  margin-bottom: 0.5rem;
+}
+
+.loginCard p {
+  margin-bottom: 2rem;
+  color: var(--color-text-muted);
+}
+
+.inputGroup {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.loginCard button {
+    width: 100%;
+    background-color: var(--color-button-primary-bg);
+    color: var(--color-button-primary-text);
+}
+
+.loginCard button:hover {
+    background-color: var(--color-button-primary-hover-bg);
+}
+
+.errorMessage {
+  background-color: #fbe9e7;
+  color: var(--error-red);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  border: 1px solid var(--error-red);
+}
+
+.registerLink {
+  margin-top: 2rem;
+}
+
+.registerLink a {
+    color: var(--color-text-link);
+    font-weight: 700;
+    text-decoration: none;
+}
