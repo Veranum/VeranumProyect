@@ -1,5 +1,5 @@
-/* ===== client/src/pages/LoginPage.module.css ===== */
-.loginContainer {
+/* client/src/pages/LoginPage.module.css */
+.formContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,22 +7,23 @@
   padding: 2rem;
 }
 
-.loginCard {
+.formCard {
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   background: var(--color-surface);
-  padding: 3rem;
+  padding: 2.5rem 3rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   text-align: center;
 }
 
-.loginCard h2 {
+.formCard h2 {
   margin-bottom: 0.5rem;
+  color: var(--veranum-blue);
 }
 
-.loginCard p {
-  margin-bottom: 2rem;
+.formCard p {
+  margin-bottom: 2.5rem;
   color: var(--color-text-muted);
 }
 
@@ -35,15 +36,31 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text-body);
 }
 
-.loginCard button {
+/* --- NUEVA REGLA AÑADIDA --- */
+/* Esta regla asegura que todos los inputs dentro de .inputGroup ocupen el 100% del ancho. */
+.inputGroup input {
     width: 100%;
+    /* Añadimos box-sizing para que el padding y borde no afecten el ancho total */
+    box-sizing: border-box; 
+    /* Puedes añadir padding aquí si los inputs originales no lo tienen, ej: padding: 0.5rem; */
+}
+/* --- FIN DE LA NUEVA REGLA --- */
+
+
+.submitButton {
+    width: 100%; /* Esta línea ya estaba, asegurando que el botón se estire */
     background-color: var(--color-button-primary-bg);
     color: var(--color-button-primary-text);
+    margin-top: 1rem;
+    /* Para mantener consistencia, agregamos box-sizing aquí también */
+    box-sizing: border-box; 
 }
 
-.loginCard button:hover {
+.submitButton:hover {
     background-color: var(--color-button-primary-hover-bg);
 }
 
@@ -52,16 +69,62 @@
   color: var(--error-red);
   padding: 1rem;
   border-radius: var(--border-radius);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border: 1px solid var(--error-red);
+  font-weight: 500;
 }
 
-.registerLink {
+.switchFormLink {
   margin-top: 2rem;
+  font-size: 0.95rem;
 }
 
-.registerLink a {
+.switchFormLink a {
     color: var(--color-text-link);
     font-weight: 700;
     text-decoration: none;
 }
+
+.switchFormLink a:hover {
+    text-decoration: underline;
+}
+/* client/src/pages/LoginPage.module.css */
+
+/* ... (todos tus estilos anteriores) ... */
+
+
+/* --- INICIO: NUEVOS ESTILOS PARA EL BOTÓN DE VER CONTRASEÑA --- */
+
+/* Contenedor para el input y el botón, permite posicionamiento */
+.passwordInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* El input dentro del nuevo contenedor debe ocupar todo el ancho */
+.passwordInputContainer input {
+  width: 100%;
+  /* Agregamos un poco de padding a la derecha para que el texto no quede debajo del botón */
+  padding-right: 4rem; 
+  box-sizing: border-box;
+}
+
+/* Estilo y posición del botón "Mostrar/Ocultar" */
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem; /* Lo posicionamos a la derecha */
+  top: 10%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.passwordToggle:hover {
+  color: var(--veranum-blue);
+}
+
+/* --- FIN: NUEVOS ESTILOS --- */

@@ -1,0 +1,81 @@
+/* src/components/common/Notification.module.css */
+@keyframes slideIn {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-large);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 350px;
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+
+.notification.show {
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+
+.notification:not(.show) {
+  animation: slideOut 0.5s ease-in-out forwards;
+}
+
+.notification p {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Estilos por tipo */
+.success {
+  background-color: #e8f5e9; /* Verde claro */
+  color: #1b5e20; /* Verde oscuro */
+  border: 1px solid #a5d6a7;
+}
+
+.error {
+  background-color: #ffebee; /* Rojo claro */
+  color: #c62828; /* Rojo oscuro */
+  border: 1px solid #ef9a9a;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 0 4px 0;
+  line-height: 1;
+}

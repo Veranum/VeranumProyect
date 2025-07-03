@@ -1,0 +1,98 @@
+/* src/pages/ServiciosPage.module.css */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding-top: 2rem;
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-header);
+}
+
+.header p {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.servicesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding-bottom: 5rem;
+}
+
+.serviceRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.rowReverse {
+  direction: rtl;
+}
+.rowReverse > * {
+  direction: ltr;
+}
+
+.imageWrapper {
+  /* --- CORRECCIÓN: Se aplica el border-radius solicitado --- */
+  border-radius: 8px; 
+  overflow: hidden;
+  box-shadow: var(--shadow-large);
+  height: 400px;
+  /* Se eliminó el padding y el background-color para quitar el efecto de marco */
+}
+
+.imageWrapper:hover {
+  box-shadow: var(--shadow-large);
+}
+
+.serviceImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Se eliminó el border-radius de aquí ya que el wrapper se encarga */
+}
+
+.imageWrapper:hover .serviceImage {
+  transform: scale(1.05);
+}
+
+.textContent {
+  padding: 1rem;
+}
+
+.serviceTitle {
+  font-size: 2.2rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--veranum-blue);
+  font-weight: 700;
+}
+
+.serviceDescription {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-text-body);
+  margin-bottom: 2rem;
+}
+
+/* Responsive para pantallas más pequeñas */
+@media (max-width: 992px) {
+  .serviceRow {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .rowReverse {
+    direction: initial;
+  }
+  .imageWrapper {
+    height: auto;
+  }
+}

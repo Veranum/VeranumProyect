@@ -1,0 +1,223 @@
+/* src/pages/ReservarPage.module.css */
+.bookingPageLayout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* --- Columna Izquierda: Info Habitación --- */
+.roomInfoColumn {
+    position: sticky;
+    top: 2rem;
+}
+
+.roomImage {
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-large);
+    margin-bottom: 2rem;
+}
+
+.roomDetails h1 {
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--color-text-header);
+}
+
+.roomDescription {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-body);
+    margin-bottom: 1.5rem;
+}
+
+.roomCapacity {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    background-color: var(--color-surface);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+}
+
+
+/* --- Columna Derecha: Formulario --- */
+.bookingFormColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bookingCard {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+}
+
+.bookingCard h2 {
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--color-text-header);
+}
+
+.datePickerGroup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: var(--color-background);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+}
+
+.dateInput {
+    flex-grow: 1;
+}
+
+.dateInput label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.dateInput input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+    color-scheme: light;
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+}
+
+.servicesSection {
+    margin-top: 2rem;
+}
+
+.servicesSection h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.costoPorDia {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+}
+
+.servicesList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.serviceItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-background);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    border: 1px solid transparent;
+}
+.serviceItem:hover {
+    border-color: var(--color-primary-light);
+}
+
+.serviceItem input {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: var(--veranum-blue);
+}
+
+.serviceItem span {
+    flex-grow: 1;
+}
+
+.servicePrice {
+    font-weight: 600;
+}
+
+/* --- Resumen de Precio --- */
+.priceSummary {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.priceSummary h3 {
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.priceRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.totalRow {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text-header);
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 1rem 0;
+}
+
+/* --- Botón --- */
+.confirmButton {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background-color: var(--color-button-secondary-bg);
+    color: var(--color-button-secondary-text);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.confirmButton:hover:not(:disabled) {
+    background-color: var(--color-button-secondary-hover-bg);
+    transform: translateY(-2px);
+}
+
+.confirmButton:disabled {
+    background-color: var(--neutral-300);
+    cursor: not-allowed;
+    color: var(--neutral-500);
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .bookingPageLayout {
+        grid-template-columns: 1fr;
+    }
+    .roomInfoColumn {
+        position: static;
+    }
+}

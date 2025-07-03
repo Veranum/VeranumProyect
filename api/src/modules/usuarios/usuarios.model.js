@@ -3,6 +3,21 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const UsuarioSchema = new mongoose.Schema({
+  // --- CAMBIO: Se reemplaza el _id por defecto ---
+  _id: {
+    type: String,
+    alias: 'run_cliente', // Podemos usar 'run_cliente' en el código para más claridad
+    required: [true, 'El RUN del cliente es requerido.'],
+    uppercase: true,
+    trim: true,
+    // Validación con Expresión Regular para el formato del RUN chileno
+    validate: {
+        validator: function(v) {
+            return /^[0-9]{7,8}-[0-9K]$/.test(v);
+        },
+        message: props => `${props.value} no es un formato de RUN válido.`
+    }
+  },
   nombre: {
     type: String,
     required: [true, 'El nombre es requerido.'],
@@ -20,7 +35,7 @@ const UsuarioSchema = new mongoose.Schema({
     type: String,
     required: [true, 'La contraseña es requerida.'],
     minlength: 6,
-    select: false, // No se mostrará en las consultas por defecto
+    select: false,
   },
   rol: {
     type: String,

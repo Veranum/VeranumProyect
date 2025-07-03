@@ -8,29 +8,24 @@ require('./modules/usuarios/usuarios.model');
 require('./modules/habitaciones/habitaciones.model');
 require('./modules/reservas/reservas.model');
 require('./modules/promociones/promociones.model');
+require('./modules/counters/counters.model');
+require('./modules/hoteles/hotel.model');
+require('./modules/precios/precio.model.js');
+require('./modules/servicios/servicio.model.js');
 
-// --- Importación de Rutas ---
-const authRoutes = require('./modules/auth/auth.routes.js');
-const habitacionesRoutes = require('./modules/habitaciones/habitaciones.routes.js');
-const promocionesRoutes = require('./modules/promociones/promociones.routes.js');
-const reportesRoutes = require('./modules/reportes/reportes.routes.js');
-const reservasRoutes = require('./modules/reservas/reservas.routes.js');
-const usuariosRoutes = require('./modules/usuarios/usuarios.routes.js');
+// --- PASO 2: Importación del Enrutador Principal ---
+const mainApiRouter = require('./routes'); // Usamos el index.js de la carpeta routes
 
 const app = express();
 
+// --- Middlewares Generales ---
 app.use(cors());
 app.use(express.json());
 
-// --- Uso de Rutas ---
-app.use('/api/auth', authRoutes);
-app.use('/api/habitaciones', habitacionesRoutes);
-app.use('/api/promociones', promocionesRoutes);
-app.use('/api/reportes', reportesRoutes);
-app.use('/api/reservas', reservasRoutes);
-app.use('/api/usuarios', usuariosRoutes);
-require('./modules/counters/counters.model');
+// --- PASO 3: Uso de Rutas de la API ---
+app.use('/api', mainApiRouter);
 
+// --- Middleware de Manejo de Errores (Siempre al final) ---
 app.use(errorHandler);
 
 module.exports = app;

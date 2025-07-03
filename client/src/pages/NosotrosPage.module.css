@@ -1,0 +1,167 @@
+/* src/pages/NosotrosPage.module.css */
+.nosotrosPage {
+    background-color: var(--color-background);
+    padding-bottom: 5rem;
+}
+
+/* --- Hero Section --- */
+.heroSection {
+    position: relative;
+    padding: 5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: url('https://www.krystalgrand-cancun.com/media/uploads/cms_apps/imagenes/inner-grand-cancun-aa_oNlTsCL.jpeg?q=pr:sharp/rs:fill/w:1920/h:500/g:ce/f:jpg');
+    background-size: cover;
+    background-position: center 70%;
+    height: 400px; 
+    overflow: hidden;
+    color: var(--white);
+}
+
+.heroOverlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0, 21, 28, 0.6), rgba(0, 41, 56, 0.4));
+}
+
+.heroTitle {
+    position: relative;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+    color: var(--white);
+}
+
+.heroSubtitle {
+    position: relative;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+}
+
+/* --- Estilos Generales de Sección --- */
+.sectionTitle {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 3rem;
+    color: var(--color-text-header);
+}
+
+/* --- Sección de Historia (AJUSTADA) --- */
+.storySection {
+    padding: 1rem 0;
+}
+.storyGrid {
+    display: grid;
+    grid-template-columns: 150px 1fr; /* Columna fija para el ícono */
+    gap: 3rem; /* Aumentado el espacio */
+    align-items: center;
+}
+.storyIconWrapper {
+    width: 120px;
+    height: 120px;
+    background-color: var(--color-surface);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--veranum-blue);
+    box-shadow: var(--box-shadow);
+    margin: 0 auto;
+}
+.storyContent h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-header); /* Corregido el color */
+    text-align: left;
+}
+.storyContent p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: left;
+    color: var(--color-text-body);
+}
+
+/* --- Sección de Valores --- */
+.valuesSection {
+    padding: 1rem 0;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+.valuesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.valueCard {
+    text-align: center;
+}
+.valueIcon {
+    color: var(--veranum-blue);
+    background-color: var(--color-background);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+.valueCard h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Misión y Visión --- */
+.missionVisionSection {
+    padding: 1rem 0;
+    background-color: var(--color-background);
+}
+.missionVisionGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.card {
+    padding: 2.5rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    background-color: var(--color-surface);
+    box-shadow: var(--box-shadow);
+}
+.cardIcon {
+    margin-bottom: 1rem;
+    color: var(--veranum-blue);
+}
+.card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+.card p {
+    line-height: 1.7;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .storyGrid { 
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .storyContent h2, .storyContent p { text-align: center; }
+    .valuesGrid { grid-template-columns: 1fr; gap: 3rem; }
+}
+@media (max-width: 768px) {
+    .heroTitle { font-size: 2.2rem; }
+    .heroSubtitle { font-size: 1.1rem; }
+    .storySection, .valuesSection, .missionVisionSection { padding: 3rem 1rem; }
+    .storyContent h2, .sectionTitle { font-size: 2.2rem; }
+    .missionVisionGrid { grid-template-columns: 1fr; }
+}   

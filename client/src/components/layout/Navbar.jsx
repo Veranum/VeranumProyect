@@ -18,7 +18,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isNosotrosDropdownOpen, setIsNosotrosDropdownOpen] = useState(false);
+    const [,setIsNosotrosDropdownOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     
     const dropdownRef = useRef(null);
@@ -54,18 +54,12 @@ const Navbar = () => {
                     <div className={styles.navRight}>
                         <nav className={styles.desktopMenu}>
                             <Link to="/habitaciones" className={styles.navLink}>Habitaciones</Link>
-                            <Link to="/" className={styles.navLink}>Servicios</Link>
-                            <div className={styles.dropdown} ref={dropdownRef}>
-                                <button className={styles.navLink} onClick={() => setIsNosotrosDropdownOpen(!isNosotrosDropdownOpen)}>
+                            <Link to="/servicios" className={styles.navLink}>Servicios</Link>
+                            <Link to="/nosotros" className={styles.navLink}>
                                     Nosotros <ChevronDown />
-                                </button>
-                                {isNosotrosDropdownOpen && (
-                                    <div className={styles.dropdownContent}>
-                                        <Link to="/" onClick={closeAllMenus}>Contacto</Link>
-                                        <Link to="/" onClick={closeAllMenus}>Galería</Link>
-                                    </div>
-                                )}
-                            </div>
+                                </Link>
+                                
+                            
                             {user && (user.rol === 'admin' || user.rol === 'gerente') && (
                                 <Link to="/admin" className={styles.navLink}>Dashboard</Link>
                             )}

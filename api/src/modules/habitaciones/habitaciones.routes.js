@@ -10,16 +10,18 @@ const {
 } = require('./habitaciones.controller');
 const { protect, authorize } = require('../../middleware/auth.middleware');
 
-// Este archivo de rutas ahora solo se encarga de las operaciones CRUD de habitaciones.
-// La lógica de disponibilidad se movió a /reservas, que es donde corresponde.
+const adminRoles = ['admin', 'gerente'];
 
+// La ruta raíz ahora maneja GET para todos y POST para admin
 router.route('/')
   .get(getHabitaciones)
-  .post(protect, authorize('admin', 'gerente'), createHabitacion);
+  .post(protect, authorize(...adminRoles), createHabitacion);
 
+// --- CORRECCIÓN: Se unifican todas las operaciones por ID en una sola ruta ---
+// La protección de authorize() se encarga de la seguridad para PUT y DELETE
 router.route('/:id')
   .get(getHabitacion)
-  .put(protect, authorize('admin', 'gerente'), updateHabitacion)
-  .delete(protect, authorize('admin', 'gerente'), deleteHabitacion);
+  .put(protect, authorize(...adminRoles), updateHabitacion)
+  .delete(protect, authorize(...adminRoles), deleteHabitacion);
 
 module.exports = router;

@@ -1,57 +1,76 @@
-/* client/src/pages/AdminDashboardPage.module.css */
-.dashboardContainer h1 {
-  margin-bottom: 0.5rem;
+/* src/pages/AdminDashboardPage.module.css */
+.dashboardContainer {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
 }
 
-.dashboardContainer > p { /* Selector para el párrafo de bienvenida */
-  margin-bottom: 3rem;
-  font-size: 1.1rem;
-  color: var(--color-text-muted);
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
 }
 
-.dashboardGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--color-text-header);
+    margin-bottom: 0.5rem;
 }
 
-.dashboardCard {
-  background: var(--color-surface);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  border-left: 5px solid var(--veranum-blue);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.header p {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.dashboardCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 28px rgba(0, 95, 115, 0.12);
+.managementSection h2 {
+    font-size: 1.8rem;
+    color: var(--color-text-header);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border);
 }
 
-.dashboardCard h3 {
-  margin-top: 0;
-  color: var(--veranum-blue);
+.managementGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
-.dashboardCard p {
-  flex-grow: 1;
-  font-size: 1rem;
-  color: var(--color-text-body);
+.managementCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--color-text-body);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border-left: 5px solid transparent;
 }
 
-.dashboardCard button {
-    background-color: var(--color-button-primary-bg);
-    color: var(--color-button-primary-text);
+.managementCard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-lg);
+    border-left-color: var(--veranum-blue);
 }
 
-.dashboardCard button:hover {
-    background-color: var(--color-button-primary-hover-bg);
+.managementCard h3 {
+    font-size: 1.2rem;
+    color: var(--color-text-header);
+    margin: 0 0 0.25rem 0;
 }
 
-.dashboardCard.cardReservas { border-color: var(--veranum-blue); }
-.dashboardCard.cardHabitaciones { border-color: var(--success-green); }
-.dashboardCard.cardReportes { border-color: var(--error-red); }
-.dashboardCard.cardPromociones { border-color: var(--action-amber); }
+.managementCard p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.managementCard svg {
+    color: var(--color-text-muted);
+    transition: transform 0.2s;
+}
+
+.managementCard:hover svg {
+    transform: translateX(5px);
+    color: var(--veranum-blue);
+}

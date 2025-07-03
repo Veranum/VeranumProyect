@@ -1,49 +1,79 @@
-// src/modules/habitaciones/habitaciones.controller.js
 const mongoose = require('mongoose');
-const Habitacion = require('./habitaciones.model');
+const Habitacion = mongoose.model('Habitacion');
 const Reserva = mongoose.model('Reserva');
+const Precio = mongoose.model('Precio');
 
-// @desc    Obtener todas las habitaciones y su disponibilidad para HOY
+// @desc    Obtener todas las habitaciones, su precio vigente y su disponibilidad
+// @access  Público
 exports.getHabitaciones = async (req, res, next) => {
     try {
+        const query = req.query.hotelId ? { hotel_id: req.query.hotelId } : {};
+        
+        const todasLasHabitaciones = await Habitacion.find(query).sort({ _id: 1 }).lean();
+
+        const habitacionesConPrecio = await Promise.all(
+            todasLasHabitaciones.map(async (habitacion) => {
+                const precioVigente = await Precio.findOne({
+                    habitacion_id: habitacion._id,
+                    fecha_vigencia: { $lte: new Date() }
+                }).sort({ fecha_vigencia: -1 });
+
+                return {
+                    ...habitacion,
+                    precio: precioVigente ? precioVigente.valor : 0
+                };
+            })
+        );
+        
         const inicioDeHoy = new Date();
         inicioDeHoy.setHours(0, 0, 0, 0);
-        const inicioDeManana = new Date(inicioDeHoy);
-        inicioDeManana.setDate(inicioDeManana.getDate() + 1);
 
-        const reservasDeHoy = await Reserva.find({
-            fecha_inicio: { $lt: inicioDeManana },
+        const reservasActivasOFuturas = await Reserva.find({
+            estado: 'Confirmado',
             fecha_fin: { $gt: inicioDeHoy }
         }).select('habitacion_id');
 
-        const habitacionesOcupadasIds = new Set(reservasDeHoy.map(r => r.habitacion_id.toString()));
-        const todasLasHabitaciones = await Habitacion.find().sort({ numeroHabitacion: 1 }).lean();
+        const habitacionesNoDisponiblesIds = new Set(reservasActivasOFuturas.map(r => String(r.habitacion_id)));
 
-        const habitacionesConDisponibilidad = todasLasHabitaciones.map(habitacion => ({
+        const resultadoFinal = habitacionesConPrecio.map(habitacion => ({
             ...habitacion,
-            disponible: !habitacionesOcupadasIds.has(habitacion._id.toString())
+            disponible: !habitacionesNoDisponiblesIds.has(String(habitacion._id))
         }));
 
-        res.status(200).json({ success: true, count: habitacionesConDisponibilidad.length, data: habitacionesConDisponibilidad });
+        res.status(200).json({ success: true, count: resultadoFinal.length, data: resultadoFinal });
+
     } catch (error) {
         next(error);
     }
 };
 
-// @desc    Obtener una sola habitación por su ID
+// @desc    Obtener una sola habitación (también con su precio vigente)
+// @access  Público
 exports.getHabitacion = async (req, res, next) => {
      try {
-        const habitacion = await Habitacion.findById(req.params.id);
+        const habitacion = await Habitacion.findById(req.params.id).lean();
         if (!habitacion) {
             return res.status(404).json({ success: false, message: 'Habitación no encontrada' });
         }
-        res.status(200).json({ success: true, data: habitacion });
+        
+        const precioVigente = await Precio.findOne({
+            habitacion_id: habitacion._id,
+            fecha_vigencia: { $lte: new Date() }
+        }).sort({ fecha_vigencia: -1 });
+
+        const habitacionConPrecio = {
+            ...habitacion,
+            precio: precioVigente ? precioVigente.valor : 0
+        };
+
+        res.status(200).json({ success: true, data: habitacionConPrecio });
     } catch (error) {
         next(error);
     }
 };
 
 // @desc    Crear una nueva habitación
+// @access  Admin
 exports.createHabitacion = async (req, res, next) => {
     try {
         const habitacion = await Habitacion.create(req.body);
@@ -54,6 +84,7 @@ exports.createHabitacion = async (req, res, next) => {
 };
 
 // @desc    Actualizar una habitación
+// @access  Admin
 exports.updateHabitacion = async (req, res, next) => {
      try {
         const habitacion = await Habitacion.findByIdAndUpdate(req.params.id, req.body, {
@@ -70,12 +101,17 @@ exports.updateHabitacion = async (req, res, next) => {
 };
 
 // @desc    Eliminar una habitación
+// @access  Admin
 exports.deleteHabitacion = async (req, res, next) => {
     try {
-        const habitacion = await Habitacion.findByIdAndDelete(req.params.id);
+        const habitacion = await Habitacion.findById(req.params.id);
          if (!habitacion) {
             return res.status(404).json({ success: false, message: 'Habitación no encontrada' });
         }
+
+        await Precio.deleteMany({ habitacion_id: habitacion._id });
+        await habitacion.deleteOne();
+        
         res.status(200).json({ success: true, data: {} });
     } catch (error) {
         next(error);

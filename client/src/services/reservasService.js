@@ -13,3 +13,9 @@ export const createReservation = async (reservationData) => {
   const response = await api.post('/reservas', reservationData);
   return response.data;
 };
+
+export const getServiciosByHotel = async (hotelId) => {
+    if (!hotelId) return { data: [] };
+    const response = await api.get(`/servicios/hotel/${hotelId}`);
+    return response.data;
+};

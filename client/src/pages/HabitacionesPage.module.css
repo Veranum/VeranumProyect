@@ -1,28 +1,81 @@
 /* client/src/pages/HabitacionesPage.module.css */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- Cabecera --- */
 .header {
   text-align: center;
   margin-bottom: 3rem;
 }
+.header h1 { font-size: 2.8rem; }
+.header p { font-size: 1.2rem; color: var(--color-text-muted); max-width: 600px; margin: 0.5rem auto 0; }
 
-.header h1 {
-  font-size: 2.8rem;
+/* --- Contenedor de Filtros (AJUSTADO) --- */
+.filterContainer {
+  display: grid;
+  /* Columnas ajustadas para mejor distribución */
+  grid-template-columns: minmax(300px, 1.5fr) 1fr 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  margin-bottom: 3rem;
+  align-items: end; /* Alinea los elementos en la base para un look limpio */
+}
+.searchGroup {
+  position: relative;
+}
+.searchInput {
+  width: 83%;
+  padding: 0.75rem 0.75rem 0.75rem 40px; /* Padding vertical reducido */
+  font-size: 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236c757d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 18px; /* Ícono más pequeño */
+}
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.filterGroup label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-body);
+  padding-left: 0.25rem;
+  text-align: left;
+}
+.filterGroup select {
+  width: 100%;
+  padding: 0.75rem; /* Padding vertical reducido */
+  font-size: 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-surface);
+  cursor: pointer;
 }
 
-.header p {
+/* --- Grilla de Tarjetas --- */
+.loadingContainer, .noResults {
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: 4rem 0;
   font-size: 1.2rem;
   color: var(--color-text-muted);
-  max-width: 600px;
-  margin: 0.5rem auto 0;
 }
-
 .roomList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  align-items: stretch; /* Asegura que todas las tarjetas en una fila tengan la misma altura */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
 }
-
-.roomDetailCard {
+.summaryCard {
   background: var(--color-surface);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -30,64 +83,133 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  align-self: start;
 }
-
-.roomDetailCard:hover {
+.summaryCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 95, 115, 0.15);
+  box-shadow: var(--shadow-large);
 }
-
-.roomImage {
-    position: relative;
-    width: 100%;
-    height: 220px;
+.summaryImageContainer {
+  position: relative;
+  width: 100%;
+  height: 220px;
 }
-
-.roomImage img {
+.summaryImageContainer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
-
-.roomInfo {
+.summaryInfo {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Permite que esta sección ocupe el espacio vertical disponible */
+  flex-grow: 1;
 }
-
-.roomInfo h2 {
-  margin-top: 0;
-  font-size: 1.8rem;
-  color: var(--veranum-blue);
+.summaryInfo h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.6rem;
+  color: var(--color-text-header);
 }
-
-.roomPrice {
-  font-size: 1.5rem;
+.summaryPrice {
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--action-amber);
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
+  margin: 0 0 1.5rem 0;
 }
-
-.roomDescription {
+.detailsButton {
+  background-color: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
+  width: 100%;
+  padding: 12px;
   font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  /* --- CAMBIO: Eliminamos flex-grow para que no se estire --- */
+  font-weight: 700;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.2s;
+}
+.detailsButton:hover {
+  background-color: var(--color-button-primary-hover-bg);
+}
+.notAvailableSummary .summaryImageContainer img {
+  filter: grayscale(80%);
+}
+.notAvailableBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(40, 40, 40, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: bold;
 }
 
+/* --- Estilos para el Modal de Detalles --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem 0;
+  animation: fadeIn 0.3s ease;
+}
+.modalContent {
+  background: var(--color-surface);
+  border-radius: calc(var(--border-radius) - 2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  animation: slideInUp 0.4s ease;
+}
+.closeModalButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  z-index: 1001;
+  transition: color 0.2s;
+}
+.closeModalButton:hover { color: var(--color-text-header); }
+.modalImage {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+}
+.modalImage img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--border-radius) 0 0 var(--border-radius); }
+.modalInfo {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.modalInfo h2 { margin-top: 0; font-size: 2rem; color: var(--veranum-blue); }
+.modalPrice { font-size: 1.5rem; font-weight: 700; color: var(--action-amber); margin-top: -0.5rem; margin-bottom: 1rem; }
+.modalDescription { font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
 .amenitiesList {
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem 0;
 }
-
 .amenitiesList li {
   background: var(--color-background);
   padding: 8px 12px 8px 28px;
@@ -95,7 +217,6 @@
   position: relative;
   font-size: 0.9rem;
 }
-
 .amenitiesList li::before {
   content: '✓';
   color: var(--color-state-success);
@@ -105,41 +226,50 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
 .reserveButton {
   background-color: var(--color-button-secondary-bg);
   color: var(--color-button-secondary-text);
   width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  /* --- CAMBIO: Empujamos el botón hacia abajo --- */
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
   margin-top: auto;
+  transition: background-color 0.2s;
 }
-
 .reserveButton:hover {
     background-color: var(--color-button-secondary-hover-bg);
 }
-
 .reserveButton:disabled {
     background-color: var(--neutral-300);
     color: var(--neutral-500);
     cursor: not-allowed;
-    transform: none;
 }
 
-.notAvailable {
-    opacity: 0.7;
+/* --- Responsive para Filtros y Modal --- */
+@media (max-width: 992px) {
+  .filterContainer {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-
-.notAvailableOverlay {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background-color: var(--color-state-error);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    font-weight: bold;
-    z-index: 2;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+@media (max-width: 768px) {
+  .filterContainer {
+    grid-template-columns: 1fr;
+  }
+  .modalContent {
+    grid-template-columns: 1fr;
+    width: 95%;
+    max-height: 90vh;
+  }
+  .modalImage {
+    height: 220px;
+    min-height: 220px;
+  }
+   .modalImage img { border-radius: var(--border-radius) var(--border-radius) 0 0; }
+  .modalInfo {
+    padding: 1.5rem;
+  }
+  .modalInfo h2 { font-size: 1.8rem; }
 }

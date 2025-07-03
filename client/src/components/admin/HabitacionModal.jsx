@@ -1,42 +1,48 @@
 // src/components/admin/HabitacionModal.jsx
 import React, { useState, useEffect } from 'react';
-import styles from './ReservaModal.module.css'; // Reutilizamos estilos
+import styles from './ReservaModal.module.css';
 
-const HabitacionModal = ({ show, onClose, onSave, habitacion }) => {
+const HabitacionModal = ({ show, onClose, onSave, habitacion, hoteles, defaultHotelId }) => {
     const [formData, setFormData] = useState({
+        hotel_id: '',
         nombre: '',
         descripcion: '',
         categoria: 'individual',
-        capacidad: '1', // Valor por defecto
-        piso: '1',      // Valor por defecto
-        precio_noche: '',
+        capacidad: '1',
+        piso: '1',
+        precio: '',
         servicios: ''
     });
 
     useEffect(() => {
-        if (habitacion) {
-            setFormData({
-                nombre: habitacion.nombre || '',
-                descripcion: habitacion.descripcion || '',
-                categoria: habitacion.categoria || 'individual',
-                capacidad: habitacion.capacidad || '1',
-                piso: habitacion.piso || '1',
-                precio_noche: habitacion.precio_noche || '',
-                servicios: habitacion.servicios ? habitacion.servicios.join(', ') : ''
-            });
-        } else {
-            setFormData({
-                nombre: '',
-                descripcion: '',
-                categoria: 'individual',
-                capacidad: '1',
-                piso: '1',
-                precio_noche: '',
-                servicios: ''
-            });
+        if (show) {
+            if (habitacion) {
+                // Modo Edición
+                setFormData({
+                    hotel_id: habitacion.hotel_id || '',
+                    nombre: habitacion.nombre || '',
+                    descripcion: habitacion.descripcion || '',
+                    categoria: habitacion.categoria || 'individual',
+                    capacidad: habitacion.capacidad?.toString() || '1',
+                    piso: habitacion.piso?.toString() || '1',
+                    precio: habitacion.precio || '',
+                    servicios: habitacion.servicios ? habitacion.servicios.join(', ') : ''
+                });
+            } else {
+                // Modo Creación
+                setFormData({
+                    hotel_id: defaultHotelId || (hoteles && hoteles.length > 0 ? hoteles[0]._id : ''),
+                    nombre: '',
+                    descripcion: '',
+                    categoria: 'individual',
+                    capacidad: '1',
+                    piso: '1',
+                    precio: '',
+                    servicios: ''
+                });
+            }
         }
-    }, [habitacion, show]);
-
+    }, [habitacion, show, hoteles, defaultHotelId]);
 
     if (!show) {
         return null;
@@ -49,31 +55,50 @@ const HabitacionModal = ({ show, onClose, onSave, habitacion }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        if (!formData.hotel_id) {
+            alert('Error: Debe seleccionar un hotel de pertenencia antes de guardar.');
+            return;
+        }
+
+        // Se preparan los datos con los tipos correctos
         const dataToSave = {
-            ...formData,
-            servicios: formData.servicios.split(',').map(s => s.trim()).filter(s => s)
+            hotel_id: formData.hotel_id,
+            nombre: formData.nombre,
+            descripcion: formData.descripcion,
+            categoria: formData.categoria,
+            capacidad: parseInt(formData.capacidad, 10),
+            piso: parseInt(formData.piso, 10),
+            precio: parseFloat(formData.precio),
+            servicios: formData.servicios.split(',').map(s => s.trim()).filter(Boolean)
         };
+        
+        // --- CORRECCIÓN: Se envía el objeto 'dataToSave' con los tipos correctos ---
         onSave(dataToSave);
     };
 
+    const isSaveDisabled = !formData.hotel_id || !formData.precio;
+
     return (
         <div className={styles.modalOverlay}>
-            <div className={`${styles.modalContent} ${styles.smallModal}`}>
-                <h2>{habitacion ? 'Editar Habitación' : 'Crear Nueva Habitación'}</h2>
+            <div className={styles.modalContent}>
+                <h2>{habitacion ? `Editar Habitación Nº ${habitacion._id}` : 'Crear Nueva Habitación'}</h2>
                 <form onSubmit={handleSubmit}>
+                    <div className={styles.inputGroup}>
+                        <label>Hotel de Pertenencia</label>
+                        <select name="hotel_id" value={formData.hotel_id} onChange={handleChange} required>
+                            {hoteles?.map(hotel => (
+                                <option key={hotel._id} value={hotel._id}>{hotel.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
                     <div className={styles.inputGroup}>
                         <label>Nombre</label>
                         <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
                     </div>
                     <div className={styles.inputGroup}>
                         <label>Descripción</label>
-                        <textarea 
-                            name="descripcion" 
-                            value={formData.descripcion} 
-                            onChange={handleChange} 
-                            rows="4" 
-                            required 
-                        />
+                        <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} rows="4" required />
                     </div>
                     <div className={styles.inputGroup}>
                         <label>Categoría</label>
@@ -83,31 +108,27 @@ const HabitacionModal = ({ show, onClose, onSave, habitacion }) => {
                             <option value="matrimonial">Matrimonial</option>
                         </select>
                     </div>
-
-                    {/* --- CAMBIO A SELECT PARA CAPACIDAD --- */}
                     <div className={styles.inputGroup}>
                         <label>Capacidad (personas)</label>
                         <select name="capacidad" value={formData.capacidad} onChange={handleChange} required>
-                            <option value="1">1 persona</option>
-                            <option value="2">2 personas</option>
-                            <option value="3">3 personas</option>
-                            <option value="4">4 personas</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
                         </select>
                     </div>
-
-                    {/* --- CAMBIO A SELECT PARA PISO --- */}
                     <div className={styles.inputGroup}>
                         <label>Piso</label>
                         <select name="piso" value={formData.piso} onChange={handleChange} required>
-                            <option value="1">Piso 1</option>
-                            <option value="2">Piso 2</option>
-                            <option value="3">Piso 3</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </select>
                     </div>
-
                     <div className={styles.inputGroup}>
                         <label>Precio por Noche</label>
-                        <input type="number" name="precio_noche" value={formData.precio_noche} onChange={handleChange} required min="0" />
+                        <input type="number" name="precio" value={formData.precio} onChange={handleChange} required min="0" />
+                        {habitacion && <small>Si cambia el precio, se creará un nuevo registro histórico.</small>}
                     </div>
                      <div className={styles.inputGroup}>
                         <label>Servicios (separados por coma)</label>
@@ -115,7 +136,7 @@ const HabitacionModal = ({ show, onClose, onSave, habitacion }) => {
                     </div>
                     <div className={styles.buttonGroup}>
                         <button type="button" onClick={onClose} className={styles.cancelButton}>Cancelar</button>
-                        <button type="submit">Guardar Habitación</button>
+                        <button type="submit" disabled={isSaveDisabled}>Guardar Habitación</button>
                     </div>
                 </form>
             </div>

@@ -4,61 +4,48 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import styles from './AdminDashboardPage.module.css';
 
+// Ícono para las tarjetas de navegación
+const ArrowIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>;
+
 const AdminDashboardPage = () => {
     const { user } = useContext(AuthContext);
 
-    // Protección de la ruta para asegurar que solo usuarios autorizados puedan verla
-    if (!user || (user.rol !== 'admin' && user.rol !== 'gerente')) {
-        return (
-            <div className="container">
-                <div className="card" style={{textAlign: 'center'}}>
-                    <h2>Acceso Denegado</h2>
-                    <p>Necesitas privilegios de Administrador o Gerente para ver esta página.</p>
-                    <Link to="/login"><button>Iniciar Sesión</button></Link>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className={`${styles.dashboardContainer} container`}>
-            <h1>Panel de Administración</h1>
-            <p>Bienvenido, {user.nombre}. Desde aquí puedes gestionar las operaciones del hotel.</p>
+            <div className={styles.header}>
+                <h1>Panel de Administración</h1>
+                <p>Bienvenido, {user?.nombre}. Desde aquí puedes gestionar las operaciones del hotel.</p>
+            </div>
 
-            <div className={styles.dashboardGrid}>
-                {/* Tarjeta de Gestionar Reservas */}
-                <div className={`${styles.dashboardCard} ${styles.cardReservas}`}>
-                    <h3>Gestionar Reservas</h3>
-                    <p>Ver, modificar y cancelar las reservas de los clientes.</p>
-                    <Link to="/admin/reservas">
-                        <button>Ir a Reservas</button>
-                    </Link>
-                </div>
-                
-                {/* Tarjeta de Gestionar Habitaciones */}
-                <div className={`${styles.dashboardCard} ${styles.cardHabitaciones}`}>
-                    <h3>Gestionar Habitaciones</h3>
-                    <p>Añadir nuevas habitaciones, editar precios y disponibilidad.</p>
-                    <Link to="/admin/habitaciones">
-                      <button>Ir a Habitaciones</button>
-                    </Link>
-                </div>
+            {/* --- La sección de estadísticas ha sido removida --- */}
 
-                {/* Tarjeta de Ver Reportes */}
-                <div className={`${styles.dashboardCard} ${styles.cardReportes}`}>
-                    <h3>Ver Reportes</h3>
-                    <p>Analizar la ocupación, ingresos y otras métricas clave.</p>
-                    <Link to="/admin/reportes">
-                        <button>Generar Reporte</button>
+            <div className={styles.managementSection}>
+                <h2>Módulos de Gestión</h2>
+                <div className={styles.managementGrid}>
+                    <Link to="/admin/reservas" className={`${styles.managementCard} card`}>
+                        <div><h3>Gestionar Reservas</h3><p>Ver, modificar y cancelar las reservas de los clientes.</p></div>
+                        <ArrowIcon />
                     </Link>
-                </div>
-                
-                {/* Tarjeta de Crear Promociones */}
-                 <div className={`${styles.dashboardCard} ${styles.cardPromociones}`}>
-                    <h3>Crear Promociones</h3>
-                    <p>Lanzar nuevas ofertas y descuentos para atraer clientes.</p>
-                    <Link to="#">
-                        <button>Ir a Promociones</button>
+                    <Link to="/admin/habitaciones" className={`${styles.managementCard} card`}>
+                        <div><h3>Gestionar Habitaciones</h3><p>Añadir nuevas habitaciones, editar precios y disponibilidad.</p></div>
+                        <ArrowIcon />
+                    </Link>
+                     <Link to="/admin/usuarios" className={`${styles.managementCard} card`}>
+                        <div><h3>Gestionar Usuarios</h3><p>Ver, editar y gestionar los roles de los usuarios registrados.</p></div>
+                        <ArrowIcon />
+                    </Link>
+                     <Link to="/admin/hoteles" className={`${styles.managementCard} card`}>
+                        <div><h3>Gestionar Hoteles</h3><p>Añadir nuevos hoteles y configurar sus servicios.</p></div>
+                        <ArrowIcon />
+                    </Link>
+                     <Link to="/admin/servicios" className={`${styles.managementCard} card`}>
+                        <div><h3>Gestionar Servicios</h3><p>Definir los servicios adicionales que cada hotel ofrece.</p></div>
+                        <ArrowIcon />
+                    </Link>
+                    {/* --- La tarjeta de reportes ahora es igual a las demás --- */}
+                     <Link to="/admin/reportes" className={`${styles.managementCard} card`}>
+                        <div><h3>Ver Reportes</h3><p>Analizar la ocupación, ingresos y otras métricas clave.</p></div>
+                        <ArrowIcon />
                     </Link>
                 </div>
             </div>

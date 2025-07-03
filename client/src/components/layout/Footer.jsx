@@ -20,7 +20,9 @@ const Footer = () => (
                 <p className={styles.description}>30 años de hospitalidad, ahora con la comodidad que mereces.</p>
                 <div className={styles.contactInfo}>
                     <p><LocationIcon /> <span>Av. Libertador 123, Santiago, Chile</span></p>
-                    <p><PhoneIcon /> <span>+56 2 1234 5678</span></p>
+                    <p><LocationIcon /> <span>Jackson 531, Viña del Mar, Chile</span></p>
+                    <p><PhoneIcon /> <span>+56 2 1234 5678 - Santiago</span></p>
+                    <p><PhoneIcon /> <span>+56 2 3456 7890 - Viña del Mar</span></p>
                     <p><MailIcon /> <span>contacto@veranum.cl</span></p>
                 </div>
             </div>
@@ -29,10 +31,10 @@ const Footer = () => (
             <div className={styles.footerColumn}>
                 <h3>Hotel</h3>
                 <ul>
-                    <li><Link to="/">Sobre Nosotros</Link></li>
+                    <li><Link to="/nosotros">Sobre Nosotros</Link></li>
                     <li><Link to="/habitaciones">Habitaciones</Link></li>
                     <li><Link to="/">Restaurante</Link></li>
-                    <li><Link to="/">Servicios</Link></li>
+                    <li><Link to="/servicios">Servicios</Link></li>
                 </ul>
             </div>
             
