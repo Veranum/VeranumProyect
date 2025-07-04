@@ -1,0 +1,202 @@
+/* src/pages/MisReservasPage.module.css */
+.header {
+    text-align: left;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.header p {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0.25rem 0 0 0;
+}
+
+.reservasGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.reservaCard {
+    padding: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reservaCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-lg);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.hotelInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hotelInfo svg {
+    color: var(--veranum-blue);
+}
+
+.hotelInfo h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cardBody {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.roomInfo, .dateInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.roomInfo p, .dateInfo p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.dateInfo span {
+    color: var(--color-text-muted);
+}
+
+.serviceDivider {
+    border: none;
+    border-top: 1px dashed var(--color-border-light);
+    margin: 0.5rem 0;
+}
+
+.servicesInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.servicesInfo svg {
+    color: var(--action-amber);
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.servicesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.serviceItem {
+    background-color: var(--color-background);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.cardFooter {
+    background-color: var(--color-background);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* --- ESTILOS AÑADIDOS Y MODIFICADOS --- */
+.footerActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cancelButton {
+    background-color: transparent;
+    border: 1px solid var(--error-red);
+    color: var(--error-red);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cancelButton:hover {
+    background-color: var(--error-red);
+    color: var(--color-surface);
+}
+
+.price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    text-align: right; /* Asegura alineación a la derecha */
+}
+/* --- FIN DE ESTILOS AÑADIDOS --- */
+
+.status {
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.status_confirmado {
+    background-color: var(--success-green-light);
+    color: var(--success-green-dark);
+}
+.status_cancelado {
+    background-color: var(--error-red-light);
+    color: var(--error-red-dark);
+}
+.status_pendiente {
+    background-color: var(--warning-yellow-light);
+    color: var(--warning-yellow-dark);
+}
+
+.centeredMessage, .noReservas {
+    text-align: center;
+    padding: 4rem;
+}
+
+.errorMessage {
+    color: var(--error-red);
+}
+
+.noReservas h3 {
+    font-size: 1.5rem;
+}
+
+.exploreButton {
+    background-color: var(--color-button-primary-bg);
+    color: var(--color-button-primary-text);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}

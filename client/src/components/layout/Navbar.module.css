@@ -83,28 +83,46 @@
 .dropdownContent {
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0; /* Alineado a la derecha */
   background-color: var(--color-surface);
-  min-width: 200px;
+  min-width: 220px;
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   padding: 0.5rem 0;
   z-index: 1001;
   border: 1px solid var(--color-border);
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
-.dropdownContent a {
+.dropdownContent a, .dropdownButton {
   color: var(--color-text-body);
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.5rem; /* Ajuste del padding horizontal */
   text-decoration: none;
-  display: block;
+  display: flex; /* Para alinear ícono y texto */
+  align-items: center;
+  gap: 0.75rem;
   font-weight: 500;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
-.dropdownContent a:hover {
-  background-color: var(--color-background);
+.dropdownContent a:hover, .dropdownButton:hover {
+
+
+  background-color: var(--color-hover);
+  color: var(--action-amber); /* Cambiamos el color del texto al pasar el mouse */
+  color: var(--color-text-header); /* Mantenemos el cambio de color de texto */
+
+
+}
+
+.dropdownSeparator {
+    height: 1px;
+    background-color: var(--color-border);
+    margin: 0.5rem 0;
 }
 
 .navActions {
@@ -124,7 +142,28 @@
     display: block;
 }
 
-.loginLink, .userInfo {
+/* --- ESTILO PARA EL BOTÓN DE USUARIO --- */
+.userInfoButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-body);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.userInfoButton:hover {
+  color: var(--action-amber);
+}
+
+.userInfoButton span {
+  font-weight: 700;
+}
+
+.loginLink {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -138,21 +177,6 @@
 
 .userIcon {
     stroke: var(--color-text-muted);
-}
-
-.userInfo span {
-  font-weight: 700;
-}
-
-.logoutIcon {
-    cursor: pointer;
-    margin-left: 0.5rem;
-    stroke: var(--color-text-muted);
-    transition: stroke 0.3s ease;
-}
-
-.logoutIcon:hover {
-    stroke: var(--color-text-body);
 }
 
 .mobileMenuButton {

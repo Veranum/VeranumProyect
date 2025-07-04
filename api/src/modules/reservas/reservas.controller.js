@@ -1,4 +1,4 @@
-// src/modules/reservas/reservas.controller.js
+// api/src/modules/reservas/reservas.controller.js
 const mongoose = require('mongoose');
 const Reserva = mongoose.model('Reserva');
 const Habitacion = mongoose.model('Habitacion');
@@ -66,7 +66,6 @@ exports.createReserva = async (req, res, next) => {
     }
 };
 
-// --- FUNCIÓN RESTAURADA ---
 exports.createReservaAdmin = async (req, res, next) => {
     const { cliente_id, habitacion_id, fecha_inicio, fecha_fin, estado } = req.body;
     try {
@@ -100,9 +99,45 @@ exports.createReservaAdmin = async (req, res, next) => {
 
 exports.getMisReservas = async (req, res, next) => {
     try {
-        const reservas = await Reserva.find({ cliente_id: req.user.id }).populate('habitacion_id', 'nombre').populate('hotel_id', 'nombre');
+        const reservas = await Reserva.find({ cliente_id: req.user.id })
+            .populate('habitacion_id', 'nombre')
+            .populate('hotel_id', 'nombre')
+            .populate('servicios_adicionales', 'nombre');
         res.status(200).json({ success: true, data: reservas });
     } catch (error) { next(error); }
+};
+
+// --- FUNCIÓN NUEVA ---
+exports.cancelarMiReserva = async (req, res, next) => {
+    try {
+        const reserva = await Reserva.findById(req.params.id);
+
+        if (!reserva) {
+            return res.status(404).json({ success: false, message: 'Reserva no encontrada.' });
+        }
+
+        // Verificar que el usuario sea el dueño de la reserva
+        if (reserva.cliente_id.toString() !== req.user.id) {
+            return res.status(403).json({ success: false, message: 'No autorizado para cancelar esta reserva.' });
+        }
+
+        // Verificar si la reserva ya pasó
+        if (new Date(reserva.fecha_inicio) <= new Date()) {
+            return res.status(400).json({ success: false, message: 'No se puede cancelar una reserva que ya ha comenzado o pasado.' });
+        }
+        
+        // Verificar si ya está cancelada
+        if (reserva.estado === 'Cancelado') {
+            return res.status(400).json({ success: false, message: 'Esta reserva ya ha sido cancelada.' });
+        }
+
+        reserva.estado = 'Cancelado';
+        await reserva.save();
+
+        res.status(200).json({ success: true, data: reserva });
+    } catch (error) {
+        next(error);
+    }
 };
 
 exports.getAllReservasAdmin = async (req, res, next) => {
@@ -112,7 +147,6 @@ exports.getAllReservasAdmin = async (req, res, next) => {
             .populate('cliente_id', 'nombre email _id')
             .populate('habitacion_id', 'nombre precio')
             .populate('hotel_id', 'nombre')
-            // --- CAMBIO: Se popula la información de los servicios adicionales ---
             .populate('servicios_adicionales', 'nombre precio_diario');
             
         res.status(200).json({ success: true, count: reservas.length, data: reservas });

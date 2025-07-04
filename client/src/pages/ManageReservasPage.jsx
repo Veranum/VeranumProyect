@@ -1,30 +1,41 @@
-// src/pages/ManageReservasPage.jsx
 import React, { useState, useEffect } from 'react';
-import { getReservas, deleteReserva, createReservaAdmin, updateReserva } from '../services/adminService'; 
-import ReservaModal from '../components/admin/ReservaModal';
-import ConfirmationModal from '../components/common/ConfirmationModal';
+import { getReservas, deleteReserva } from '../services/adminService';
+import { Link } from 'react-router-dom';
 import styles from './ManageReservasPage.module.css';
+import Notification from '../components/common/Notification';
+import ConfirmationModal from '../components/common/ConfirmationModal';
+import ReservaModal from '../components/admin/ReservaModal';
+
+// --- Iconos para la UI ---
+const KeyIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>;
+const UserIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
+const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
+const CalendarIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>;
+const DollarSignIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>;
+const EditIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>;
+const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
+const ClearIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>;
 
 const ManageReservasPage = () => {
     const [reservas, setReservas] = useState([]);
-    const [filteredReservas, setFilteredReservas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingReserva, setEditingReserva] = useState(null);
+    const [filters, setFilters] = useState({
+        search: '',
+        estado: 'Todos',
+        fecha: '',
+        sortBy: 'precio_desc'
+    });
+    const [notification, setNotification] = useState({ show: false, message: '', type: '' });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [deletingId, setDeletingId] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedReserva, setSelectedReserva] = useState(null);
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');
-    const [dateFilter, setDateFilter] = useState('');
-    const [sortDirection, setSortDirection] = useState('desc');
-    
-
-    const fetchReservas = async () => {
+    const loadReservas = async () => {
         try {
             setLoading(true);
-            const response = await getReservas(); 
+            const response = await getReservas();
             setReservas(response.data);
             setError('');
         } catch (err) {
@@ -33,223 +44,151 @@ const ManageReservasPage = () => {
             setLoading(false);
         }
     };
-    
-    useEffect(() => { fetchReservas(); }, []);
 
     useEffect(() => {
-        let result = [...reservas];
+        loadReservas();
+    }, []);
 
-        if (searchTerm) {
-            const lowercasedTerm = searchTerm.toLowerCase().trim();
-            result = result.filter(r => 
-                (r.numeroReserva?.toString().includes(lowercasedTerm)) ||
-                (r.cliente_id?.nombre.toLowerCase().includes(lowercasedTerm)) ||
-                (r.cliente_id?._id.toLowerCase().includes(lowercasedTerm)) ||
-                (r.habitacion_id?.nombre?.toLowerCase().includes(lowercasedTerm)) ||
-                (r.hotel_id?.nombre?.toLowerCase().includes(lowercasedTerm))
-            );
-        }
-        
-        if (statusFilter !== 'all') {
-            result = result.filter(r => r.estado === statusFilter);
-        }
-
-        if (dateFilter) {
-            const selectedDate = new Date(dateFilter);
-            selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset());
-            selectedDate.setHours(0,0,0,0);
-
-            result = result.filter(r => {
-                const checkinDate = new Date(r.fecha_inicio);
-                const checkoutDate = new Date(r.fecha_fin);
-                checkinDate.setHours(0,0,0,0);
-                checkoutDate.setHours(0,0,0,0);
-                return selectedDate >= checkinDate && selectedDate < checkoutDate;
-            });
-        }
-
-        if (sortDirection !== 'none') {
-            result.sort((a, b) => {
-                return sortDirection === 'asc' 
-                    ? a.numeroReserva - b.numeroReserva 
-                    : b.numeroReserva - a.numeroReserva;
-            });
-        }
-        
-        setFilteredReservas(result);
-    }, [searchTerm, statusFilter, dateFilter, reservas, sortDirection]);
-
-    const handleClearFilters = () => {
-        setSearchTerm('');
-        setStatusFilter('all');
-        setDateFilter('');
-        setSortDirection('desc');
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleDeleteClick = (id) => {
-        setDeletingId(id);
+    const handleClearFilters = () => setFilters({ search: '', estado: 'Todos', fecha: '', sortBy: 'precio_desc' });
+    
+    const formatDate = (dateString) => new Date(dateString).toLocaleDateString('es-CL');
+
+    const filteredAndSortedReservas = reservas
+        .filter(reserva => {
+            const searchLower = filters.search.toLowerCase();
+            const cliente = reserva.cliente_id;
+            const matchesSearch = !filters.search || (reserva.numeroReserva?.toString().includes(searchLower)) || (cliente?.nombre?.toLowerCase().includes(searchLower)) || (cliente?._id?.toLowerCase().includes(searchLower));
+            const matchesEstado = filters.estado === 'Todos' || reserva.estado === filters.estado;
+            const matchesFecha = !filters.fecha || new Date(reserva.fecha_inicio) >= new Date(filters.fecha);
+            return matchesSearch && matchesEstado && matchesFecha;
+        })
+        .sort((a, b) => {
+            const [field, direction] = filters.sortBy.split('_');
+            const factor = direction === 'asc' ? 1 : -1;
+            return (a.precio_final - b.precio_final) * factor;
+        });
+
+    const handleEditClick = (reserva) => {
+        setSelectedReserva(reserva);
+        setShowEditModal(true);
+    };
+
+    const handleDeleteClick = (reserva) => {
+        setSelectedReserva(reserva);
         setShowDeleteModal(true);
     };
 
     const confirmDelete = async () => {
-        if (deletingId) {
-            try {
-                await deleteReserva(deletingId);
-                fetchReservas();
-            } catch (err) {
-                alert('No se pudo eliminar la reserva.');
-            } finally {
-                setShowDeleteModal(false);
-                setDeletingId(null);
-            }
-        }
-    };
-
-    const formatDate = (dateString) => new Date(dateString).toLocaleDateString('es-CL');
-    
-    const handleOpenModal = (reserva = null) => {
-        setEditingReserva(reserva);
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setEditingReserva(null);
-    };
-
-    const handleSaveReserva = async (formData) => {
+        if (!selectedReserva) return;
         try {
-            if (editingReserva) {
-                await updateReserva(editingReserva._id, formData);
-            } else {
-                await createReservaAdmin(formData);
-            }
-            fetchReservas();
-            handleCloseModal();
+            await deleteReserva(selectedReserva._id);
+            setNotification({ show: true, message: 'Reserva eliminada con éxito', type: 'success' });
+            loadReservas();
         } catch (err) {
-            alert('Error al guardar la reserva.');
+            setNotification({ show: true, message: 'Error al eliminar la reserva', type: 'error' });
+        } finally {
+            setShowDeleteModal(false);
+            setSelectedReserva(null);
         }
     };
-    
+
     return (
         <div className="container">
-            <div className={styles.header}>
-                <h1>Gestión de Reservas</h1>
-                <button onClick={() => handleOpenModal()} className={styles.addButton}>Crear Nueva Reserva</button>
-            </div>
-            
-            <div className={`card ${styles.filtersCard}`}>
-                <div className={styles.searchContainer}>
-                     <div className={styles.filterGroup}>
-                        <label htmlFor="search">Buscar Reserva</label>
-                        <input 
-                            id="search"
-                            type="text" 
-                            placeholder="RUN, Nº Reserva o Nombre..." 
-                            value={searchTerm} 
-                            onChange={(e) => setSearchTerm(e.target.value)} 
-                        />
-                    </div>
-                     <button onClick={handleClearFilters} className={styles.clearFiltersButton}>
-                        Borrar Filtros
-                    </button>
-                </div>
-                <div className={styles.filterGroup}>
-                    <label htmlFor="status">Filtrar por Estado</label>
-                    <select id="status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                        <option value="all">Todos los Estados</option>
-                        <option value="Confirmado">Confirmado</option>
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Cancelado">Cancelado</option>
-                    </select>
-                </div>
-                <div className={styles.filterGroup}>
-                    <label htmlFor="sort">Ordenar por Nº Reserva</label>
-                    <select id="sort" value={sortDirection} onChange={(e) => setSortDirection(e.target.value)}>
-                        <option value="desc">Mayor a Menor</option>
-                        <option value="asc">Menor a Mayor</option>
-                        <option value="none">Por Defecto</option>
-                    </select>
-                </div>
-                <div className={styles.filterGroup}>
-                    <label htmlFor="dateFilter">Buscar por Fecha</label>
-                    <input 
-                        id="dateFilter"
-                        type="date" 
-                        value={dateFilter} 
-                        onChange={(e) => setDateFilter(e.target.value)} 
-                    />
-                </div>
-            </div>
-
-            <div className={styles.tableContainer}>
-                {loading ? <p>Cargando...</p> : error ? <p className={styles.errorMessage}>{error}</p> : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nº Reserva</th>
-                                <th>Hotel</th>
-                                <th>Cliente</th>
-                                <th>RUN Cliente</th>
-                                <th>Habitación</th>
-                                <th>Check-in</th>
-                                <th>Check-out</th>
-                                <th>Costo</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredReservas.length > 0 ? (
-                                filteredReservas.map(reserva => {
-                                    // El costo ya viene calculado con los servicios desde el backend.
-                                    const costoTotal = reserva.precio_final;
-
-                                    return (
-                                        <tr key={reserva._id}>
-                                            <td data-label="Nº Reserva">{reserva.numeroReserva}</td>
-                                            <td data-label="Hotel">{reserva.hotel_id?.nombre || 'N/A'}</td>
-                                            <td data-label="Cliente">{reserva.cliente_id?.nombre}</td>
-                                            <td data-label="RUN Cliente">{reserva.cliente_id?._id}</td>
-                                            <td data-label="Habitación">{reserva.habitacion_id?.nombre || '(Eliminada)'}</td>
-                                            <td data-label="Check-in">{formatDate(reserva.fecha_inicio)}</td>
-                                            <td data-label="Check-out">{formatDate(reserva.fecha_fin)}</td>
-                                            <td data-label="Costo">
-                                                <strong>${new Intl.NumberFormat('es-CL').format(costoTotal)}</strong>
-                                                {/* --- NUEVO: Se muestra la lista de servicios --- */}
-                                                {reserva.servicios_adicionales && reserva.servicios_adicionales.length > 0 && (
-                                                    <ul className={styles.servicesList}>
-                                                        {reserva.servicios_adicionales.map(servicio => (
-                                                            <li key={servicio._id}>+ {servicio.nombre}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                            </td>
-                                            <td data-label="Estado"><span className={`${styles.status} ${styles[`status_${reserva.estado?.toLowerCase()}`]}`}>{reserva.estado}</span></td>
-                                            <td data-label="Acciones">
-                                                <div className={styles.actionsContainer}>
-                                                    <button onClick={() => handleOpenModal(reserva)} className={styles.actionButton}>Editar</button>
-                                                    <button onClick={() => handleDeleteClick(reserva._id)} className={`${styles.actionButton} ${styles.deleteButton}`}>Eliminar</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr><td colSpan="10">No se encontraron reservas.</td></tr>
-                            )}
-                        </tbody>
-                    </table>
-                )}
-            </div>
-            <ReservaModal show={isModalOpen} onClose={handleCloseModal} onSave={handleSaveReserva} reserva={editingReserva} />
-            <ConfirmationModal 
+            <Notification {...notification} onClose={() => setNotification({ show: false, message: '', type: '' })} />
+            <ConfirmationModal
                 show={showDeleteModal}
                 title="Confirmar Eliminación"
-                message="¿Estás seguro de que quieres eliminar esta reserva de forma permanente?"
+                message={`¿Seguro que quieres eliminar la reserva N°${selectedReserva?.numeroReserva}?`}
                 onConfirm={confirmDelete}
                 onCancel={() => setShowDeleteModal(false)}
             />
+            {showEditModal && (
+                <ReservaModal
+                    show={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                    onSave={() => { 
+                        setShowEditModal(false);
+                        loadReservas();
+                    }}
+                    reserva={selectedReserva}
+                />
+            )}
+
+            <div className={styles.header}>
+                <h1>Gestión de Reservas</h1>
+                <button onClick={() => handleEditClick(null)} className={styles.createButton}>Crear Nueva Reserva</button>
+            </div>
+
+            <div className={`${styles.filtersContainer} card`}>
+                <div className={styles.searchWrapper}>
+                    <label htmlFor="search">Búsqueda General</label>
+                    <div className={styles.inputIconWrapper}>
+                        <SearchIcon />
+                        <input id="search" type="text" name="search" placeholder="Buscar por N° Reserva, RUN o Nombre..." value={filters.search} onChange={handleFilterChange} />
+                    </div>
+                </div>
+                <div className={styles.filterGroup}>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="estado">Estado Reserva</label>
+                        <select id="estado" name="estado" value={filters.estado} onChange={handleFilterChange}>
+                            <option value="Todos">Todos</option>
+                            <option value="Confirmado">Confirmado</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="sortBy">Ordenar por precio</label>
+                        <select id="sortBy" name="sortBy" value={filters.sortBy} onChange={handleFilterChange}>
+                            <option value="precio_desc">Mayor a Menor</option>
+                            <option value="precio_asc">Menor a Mayor</option>
+                        </select>
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="fecha">Buscar por Fecha</label>
+                        <input id="fecha" type="date" name="fecha" value={filters.fecha} onChange={handleFilterChange} title="Mostrar reservas a partir de esta fecha"/>
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label>&nbsp;</label> 
+                        <button onClick={handleClearFilters} className={styles.clearFiltersButton} title="Limpiar todos los filtros">
+                            <ClearIcon />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {loading && <p>Cargando...</p>}
+            {error && <p className={styles.errorMessage}>{error}</p>}
+            {!loading && !error && (
+                <div className={styles.reservasGrid}>
+                    {filteredAndSortedReservas.map(reserva => (
+                        <div key={reserva._id} className={`${styles.reservaCard} card`}>
+                            <div className={styles.cardHeader}>
+                                <span className={styles.reservaId}><KeyIcon /> Reserva N°{reserva.numeroReserva}</span>
+                                <span className={`${styles.status} ${styles[`status_${reserva.estado?.toLowerCase()}`]}`}>{reserva.estado}</span>
+                            </div>
+                            <div className={styles.cardBody}>
+                                <div className={styles.infoItem}><UserIcon /> <strong>Cliente:</strong> {reserva.cliente_id?.nombre || 'N/A'} ({reserva.cliente_id?._id || 'N/A'})</div>
+                                <div className={styles.infoItem}><HomeIcon /> <strong>Hotel:</strong> {reserva.hotel_id?.nombre || 'N/A'}</div>
+                                <div className={styles.infoItem}><CalendarIcon /> <strong>Fechas:</strong> {formatDate(reserva.fecha_inicio)} al {formatDate(reserva.fecha_fin)}</div>
+                            </div>
+                            <div className={styles.cardFooter}>
+                                <span className={styles.price}><DollarSignIcon /> Total: ${reserva.precio_final?.toLocaleString('es-CL')}</span>
+                                <div className={styles.actions}>
+                                    <button onClick={() => handleEditClick(reserva)} className={styles.editButton}><EditIcon /></button>
+                                    <button onClick={() => handleDeleteClick(reserva)} className={styles.deleteButton}><TrashIcon /></button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {!loading && filteredAndSortedReservas.length === 0 && <p className={styles.noResults}>No se encontraron reservas con los filtros actuales.</p>}
         </div>
     );
 };
