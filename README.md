@@ -53,13 +53,13 @@ Para ejecutar este proyecto en un entorno local, sigue estos pasos:
     npm install
     ```
 
-4.  **Ejecutar el Proyecto (Frontend)**
+4.  **Ejecutar el Proyecto (Backend)**
     Utiliza el siguiente comando para iniciar el Backend (api):
     ```sh
     cd api
     npm run dev
     ```
-5.  **Ejecutar el Proyecto (Backend)**
+5.  **Ejecutar el Proyecto (Frontend)**
     Utiliza el siguiente comando para iniciar el Frontend (client):
     ```sh
     cd client
